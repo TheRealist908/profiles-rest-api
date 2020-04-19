@@ -34,3 +34,15 @@ class UserProfileSerializer(serializers.ModelSerializer):
             password = validated_data.pop('password')
             instance.set_password(password)
         return super().update(instance, validated_data)
+
+class ProfileFeedItemSerializer(serializers.ModelSerializer):
+    """Serializes profile feed item"""
+
+    class Meta:
+        model = models.ProfileFeedItem
+        #id is automatically created by django
+        #created_on is already set earlier
+        #user_profile is set to authenticated user and not by
+        #  the user themselves
+        fields = ('id','user_profile','status_text','created_on')
+        extra_kwargs = {'user_profile': {'read_only':True}}
